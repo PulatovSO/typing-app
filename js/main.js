@@ -1,4 +1,5 @@
 
+// variables
 let body = document.querySelector('body');
 let wrapper = document.querySelector('.wrapper');
 let fieldWrap = document.querySelector('.input-field-wrap');
@@ -10,13 +11,34 @@ let startBtn = document.querySelector('.start');
 let resultWrap = document.querySelector('.result-wrap');
 let result = document.querySelector('.result');
 let againBtn = document.querySelector('.again');
+let givenText = document.querySelector('.raw-text');
+let text = field.textContent;
+let check = false;
+let tryCount = 0;
 let count = 0;
 
+// sound effects ============================================================
 let sound = new Audio();
 sound.src = '../media/click2.mp3';
 let sound2 = new Audio();
 sound2.src = '../media/click3.mp3';
+let enterSound = new Audio();
+enterSound.src = '../media/enter-sound.wav';
 
+
+// error highlight ============================================================
+let splitText = givenText.textContent.trim().split(' ');
+givenText.textContent = '';
+
+for (let i = 0; i < splitText.length; i++) {
+  givenText.innerHTML += '<span>' + splitText[i] + ' </span>'
+}
+
+let spans = document.querySelectorAll('span');
+
+// events ============================================================
+startBtn.addEventListener('click', start)
+againBtn.addEventListener('click', again)
 body.addEventListener('keydown', (e) => {
   e.keyCode == '81' ? (sound.play(), field.textContent += 'q') : false;
   e.keyCode == '87' ? (sound.play(), field.textContent += 'w') : false;
@@ -49,26 +71,32 @@ body.addEventListener('keydown', (e) => {
   e.keyCode == '190' ? (sound.play(), field.textContent += '. ') : false;
   e.keyCode == '186' ? (sound.play(), field.textContent += '; ') : false;
   e.keyCode == '222' ? (sound.play(), field.textContent += '"') : false;
+  e.keyCode == '13' && check == false ? (enterSound.play(), start()) : false;
 
+  // comparing
+  let rawText = document.querySelector('.raw-text').textContent.trim().split(' ');
+  let typed = field.textContent.trim().split(' ');
+
+  for (let i = 0; i < typed.length; i++) {
+    if (typed[i] != rawText[i]) spans[i].classList.add('wrong');
+    else spans[i].classList.remove('wrong');
+  }
+
+  // spacing
   if (e.keyCode == '32') {
     sound2.play(); 
     field.textContent += ' ';
     field.style.paddingRight = `20px`;
-    let text = field.textContent;
-    for (let i = 0; i < text.length; i++) {
-      if (i == ' ') {
-        count++
-      }
-    }
-    words.textContent = count;
+    words.textContent = typed.length;
   }
 
   if (e.keyCode != '32') field.style.paddingRight = `0px`;
 
+  // deleting
   if (e.keyCode == '8') {
     sound2.play(); 
     field.textContent = field.textContent.slice(0, -1);
-    let text = field.textContent;
+    text = field.textContent;
     if (text.slice(-1) == ' ') document.querySelector('.words').textContent--;
     if (text <= 0) {
       words.textContent = 0;
@@ -77,40 +105,32 @@ body.addEventListener('keydown', (e) => {
   }
 })
 
-
-startBtn.addEventListener('click', (e) => {
+// functions ============================================================
+function start() {
   startWrap.style.display = 'none';
   wrapper.style.display = 'block';
+  check = true;
+  timeCount()
+}
 
-  let count = 30;
-  let myTimer = setInterval(() => {
-    if (count == 10){
-      fieldWrap.classList.add('animate');
-    }
-    if (count == 0) {
-      clearInterval(myTimer);
-      wrapper.style.display = 'none';
-      resultWrap.style.display = 'block';
-      result.textContent = `Your score: ${document.querySelector('.words').textContent}`;
-    }
-    timer.textContent = count;
-    count--;
-  }, 1000)
-})
-
-againBtn.addEventListener('click', () => {
+function again() {
   resultWrap.style.display = 'none';
   wrapper.style.display = 'block';
   fieldWrap.classList.remove('animate');
   count = 0;
   words.textContent = count;
   field.textContent = '';
+  timeCount()
 
+  for (let i = 0; i < spans.length; i++) {
+    spans[i].classList.remove('wrong');
+  }
+}
+
+function timeCount() {
   let timeCount = 30;
   let myTimer = setInterval(() => {
-    if (timeCount == 10){
-      fieldWrap.classList.add('animate');
-    }
+    if (timeCount == 10) fieldWrap.classList.add('animate');
     if (timeCount == 0) {
       clearInterval(myTimer);
       wrapper.style.display = 'none';
@@ -120,4 +140,4 @@ againBtn.addEventListener('click', () => {
     timer.textContent = timeCount;
     timeCount--;
   }, 1000)
-})
+}

@@ -7,9 +7,19 @@
 body {
   font-family: 'Courier Prime', monospace;
   position: relative;
-  background-image: url(../img/bg.jpg);
-  background-size: cover;
+  background: url(../img/bg-light.jpg);
+  /* background: #200122;  
+  background: -webkit-linear-gradient(to right, #6f0000, #200122);
+  background: linear-gradient(to right, #6f0000, #200122); */
   overflow: hidden;
+}
+
+span {
+  transition: all 0.2s ease-in-out;
+}
+
+button {
+  cursor: pointer;
 }
 
 .container {
@@ -17,19 +27,16 @@ body {
   height: 100vh;
 }
 
-.wrapper {
-  display: none;
-}
-
 .start-wrap,
 .result-wrap {
   padding: 20px;
+  padding-left: 0;
   position: absolute;
   top: 50%;
   width: 100%;
   text-align: center;
-  background: #14470080;
   transform: translateY(-50%);
+  background: #af40007a;
 }
 
 .result-wrap {
@@ -52,10 +59,28 @@ body {
 
 .start {
   margin-top: 20px;
-  padding: 15px 105px;
+  width: 300px;
+  height: 70px;
   display: inline-block;
   font-size: 32px;
-  border: 1px solid ;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #282828, #202020);
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.75), 
+  10px 20px 25px rgba(0,0,0,0.4);
+  overflow: hidden;
+}
+
+.start::before {
+  content: 'Enter';
+  display: inline-block;
+  padding-top: 10px;
+  width: 95%;
+  height: 70%;
+  background: linear-gradient(90deg, #232323, #4a4a4a);
+  border-radius: 10px;
+  box-shadow: -10px -10px 10px rgba(255, 255, 255, 0.25);
+  color: #fff;
+  font-family: monospace;
 }
 
 .digits {
@@ -78,21 +103,40 @@ body {
   border: 2px solid #fff;
 }
 
+.wrapper {
+  display: none;
+}
+
+.raw-text {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  width: 800px;
+  height: 200px;
+  font-size: 30px;
+  font-weight: 800;
+  text-align: justify;
+  letter-spacing: 2px;
+  line-height: 40px;
+  color: #7a7a7a;
+  transform: translateX(-50%);
+}
+
 .input-field-wrap {
   padding: 20px;
   position: absolute;
   top: 50%;
   left: 50%;
   width: 800px;
-  height: 400px;
+  height: 200px;
   font-size: 25px;
   /* text-align: justify; */
   letter-spacing: 2px;
   line-height: 40px;
-  background: #00000011;
+  background: #00000079;
   color: #fff;
   backdrop-filter: blur(10px);
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -0%);
   border-radius: 15px;
   border: 1px solid #ffffff2c;
 }
@@ -125,15 +169,22 @@ body {
   animation-fill-mode: both;
 }
 
+.wrong {
+  position: relative;
+  font-size: 30px;
+  font-weight: 800;
+  color: #f79055;
+}
+
 @keyframes bgAnim {
   0% {
-    box-shadow: 0px 0px 101px 10px rgba(255, 0, 0, 0.336) inset;
+    box-shadow: 0px 0px 101px 5px rgba(255, 0, 0, 0.548) inset;
   }
   50% {
        box-shadow: 0px 0px 101px 10px rgba(255, 0, 0, 0.055) inset;
   }
   100% {
-    box-shadow: 0px 0px 101px 10px rgba(255, 0, 0, 0.336) inset;
+    box-shadow: 0px 0px 101px 5px rgba(255, 0, 0, 0.548) inset;
   }
 }
 
